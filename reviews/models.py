@@ -8,5 +8,5 @@ class User(models.Model):
     pwd = models.CharField(max_length=30)
     name = models.CharField(max_length=20)
     email = models.CharField(max_length=128, unique=True)
-    nickName = models.CharField(max_length=30, unique=True)
+    nickname = models.CharField(max_length=30, unique=True)
     registerDttm = models.DateTimeField(auto_now_add=True)
