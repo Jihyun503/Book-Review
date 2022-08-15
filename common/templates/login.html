@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+        <form action="" method="post">
+            {% csrf_token %}
+            <legend>로그인</legend>
+            {% for form in forms %}
+            <div>
+                <label for="{{form.auto_id}}">{{ form.label }}</label>
+                {{ form }}
+            </div>
+            {% if form.errors %}
+                <span style="color:red">{{form.errors}}</span>
+            {% endif %}
+
+            {% endfor %}
+            <br>
+            <button type="submit" class="btn btn-primary" value="login">로그인</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
