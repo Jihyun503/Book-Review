@@ -1,101 +1,63 @@
 from dataclasses import field
+from enum import unique
 from socket import fromshare
+from tkinter import Widget
 from django import forms
 from .models import *
-#from argon2 import PasswordHasher
+from .widgets import *
+from django_summernote.fields import SummernoteTextField
+from django_summernote.widgets import SummernoteWidget
 
-class joinForm(forms.ModelForm):
-    id = forms.CharField(
-        label="아이디",
+
+# 리뷰게시판
+
+class ReviewWriteForm(forms.ModelForm):
+    title = forms.CharField(
+        label="제목",
         required=True,
         widget=forms.TextInput(
             attrs={
                 "class" : "form-control",
-                "id" : "id",
             }
         ),
-        error_messages={"required" : "아이디를 입력해주세요."}
-    )
-    pwd = forms.CharField(
-        label="비밀번호",
-        required=True,
-        widget=forms.PasswordInput(
-            attrs={
-                "class" : "form-control",
-                "id" : "pwd",
-            }
-        ),
-        error_messages={"required" : "비밀번호를 입력해주세요."}
-    )
-    name = forms.CharField(
-        label="이름",
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                "class" : "form-control",
-                "id" : "name",
-            }
-        ),
-        error_messages={"required" : "이름을 입력해주세요."}
-    )
-    email = forms.EmailField(
-        label="이메일",
-        required=True,
-        widget=forms.EmailInput(
-            attrs={
-                "class" : "form-control",
-                "id" : "email",
-            }
-        ),
-        error_messages={"required" : "이메일을 입력해주세요."}
-    )
-    nickname = forms.CharField(
-        label="닉네임",
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                "class" : "form-control",
-                "id" : "nickname",
-            }
-        ),
-        error_messages={"required" : "닉네임을 입력해주세요."}
     )
 
-    fields = [
-            'id',
-            'pwd',
-            'name',
-            'email',
-            'nickname'
-    ]
+    contents = SummernoteTextField()
+    
+    meta_json = forms.CharField(
+        label="별점",
+        required=True,
+        widget=starWidget,
+    )
 
     class Meta:
-        model = User
+        model = Board
+    
         fields = [
-            'id',
-            'pwd',
-            'name',
-            'email',
-            'nickname'
+            'title',
+            'contents',
+            'meta_json'
         ]
+
+        widgets = {
+            'contents' : SummernoteWidget(),
+            'meta_json' : starWidget,
+        }
     
     def clean(self):
         cleaned_data = super().clean()
 
-        id = cleaned_data.get('id')
-        pwd = cleaned_data.get('pwd')
-        name = cleaned_data.get('name')
-        email = cleaned_data.get('email')
-        nickname = cleaned_data.get('nickname')
-        
-        if len(pwd) < 8:
-            return self.add_error("pwd", "비밀번호는 8자 이상으로 입력해주세요.")
+        title = cleaned_data.get('title', '')
+        contents = cleaned_data.get('contents', '')
+        meta_json = cleaned_data.get('meta_json', '')
+
+        if title == '':
+            return self.add_error("title", "제목을 입력해주세요.")
+        elif contents == '':
+            return self.add_error("contents", "내용을 입력해주세요.")
+        elif meta_json == 0:
+            return self.add_error("meta_json", "별점을 선택해주세요.")
         else:
-            self.id = id
-            self.pwd = pwd
-            self.name = name
-            self.email = email
-            self.nickname = nickname
-            
-
-
+            self.title = title
+            self.contents = contents
+            self.meta_json = meta_json

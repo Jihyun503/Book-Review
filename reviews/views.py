@@ -1,64 +1,54 @@
 import imp
 from django.shortcuts import render, redirect
 
-from .models import User
+from common.models import User
 from .forms import *
+from common.decorators import login_required
 
 # Create your views here.
 def index(request):
     return render(request, "index.html")
 
-def reviewList(request):
-    return render(request, "reviews.html")
+@login_required
+def reviewList(request, **kwargs):
+    context = {}
+    context['login_session'] = kwargs.get("login_session")
+    
+    return render(request, "review_list.html", context)
 
-def writeReview(request):
-    return render(request, "write.html")
-
-def join(request):
-    join_form = joinForm()
-    context = {'forms' : join_form}
+@login_required
+def writeReview(request, **kwargs):
+    context = {}
+    context['login_session'] = kwargs.get("login_session")
 
     if request.method == 'GET':
-        return render(request, "join.html", context)
-    
+        review_form = ReviewWriteForm()
+        context['forms'] = review_form
+        return render(request, "review_write.html", context)
+
     elif request.method == 'POST':
-        join_form = joinForm(request.POST)
-        if join_form.is_valid():
-            user = User(
-                id = join_form.id,
-                pwd = join_form.pwd,
-                name = join_form.name,
-                email = join_form.email,
-                nickname = join_form.nickname
+        review_form = ReviewWriteForm(request.POST)
+
+        if review_form.is_valid():
+            login_session = request.session.get('user', '')
+            writer = User.objects.get(id=login_session)
+            meta_json = {'scope': review_form.meta_json}
+
+            board = Board(
+                title=review_form.title,
+                contents=review_form.contents,
+                writer=writer,
+                category='review',
+                meta_json=str(meta_json)
             )
-            user.save()
-            return redirect('/')
+            board.save()
+            return redirect('/review')
         else:
+            '''
             context['forms'] = join_form
             if join_form.errors:
                 for value in join_form.errors.values():
                     context['error'] = value
-        return render(request, "join.html", context)
-
-    '''
-    elif request.method == 'POST':
-        id = request.POST.get('id', '')
-        pwd = request.POST.get('pwd', '')
-        name = request.POST.get('name', '')
-        email = request.POST.get('email', '')
-        nickname = request.POST.get('nickname', '')
-
-        if (id or pwd or name or email or nickname) == '':
-            return redirect('join')
-        else:
-            user = User(
-                id = id,
-                pwd = pwd,
-                name = name,
-                email = email,
-                nickname = nickname
-            )
-            user.save()
-
-        return redirect('/')
-    '''
+            '''
+            context['forms'] = review_form
+        return render(request, "review_write.html", context)
