@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">제목</th>
+            <th scope="col">닉네임</th>
+            <th scope="col">작성일</th>
+            <th scope="col">최종수정일</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          {% for board in boards %}
+          <tr>
+            <th scope="row">{{ board.bno }}</th>
+            <td><a href="detail/{{board.bno}}", target="_self">{{ board.title }}</a></td>
+            <td>{{ board.writer.nickname }}</td>
+            <td>{{ board.write_date }}</td>
+            <td>{{ board.update_date }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+        <a href="{% url 'review_write' %}"><button class="btn btn-primary">글쓰기</button></a>
+    </div>
+  </div>
+{% endblock %}
