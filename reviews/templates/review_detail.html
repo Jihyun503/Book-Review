@@ -28,11 +28,23 @@
           value="{{ board.writer.nickname }}"
           readonly
         />
+        <label for="hits">조회수</label>
+        <input
+          type="text"
+          class="form-control"
+          id="hits"
+          value="{{ board.hits }}"
+          readonly
+        />
         <label for="contents">내용</label>
         <textarea class="form-control" readonly>{{ board.contents | safe }}</textarea>
         {{ scope }}
       </div>
-      <button class="btn btn-primary" onClick="history.back();return false;">돌아가기</button>
+      {% if writer %}
+        <a href="/review/detail/{{board.bno}}/modify/"><button class="btn btn-primary">수정</button></a>
+        <a href="/review/detail/{{board.bno}}/delete/"><button class="btn btn-primary">삭제</button></a>
+      {% endif %}
+      <button class="btn btn-primary" onClick="history.back();return false;">목록으로</button>
     </div>
   </div>
 {% endblock %}
