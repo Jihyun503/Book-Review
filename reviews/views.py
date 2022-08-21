@@ -14,7 +14,10 @@ def reviewList(request, **kwargs):
     context = {}
     context['login_session'] = kwargs.get("login_session")
 
-    boards = Board.objects.select_related('writer').filter(category='review')
+    from django.db.models import Window, F
+    from django.db.models.functions import RowNumber
+    boards = Board.objects.select_related('writer').filter(category='review').annotate(row_number=Window(expression=RowNumber(), order_by=F('bno').asc())).order_by("-bno")
+
     context['boards'] = boards
     
     return render(request, "review_list.html", context)

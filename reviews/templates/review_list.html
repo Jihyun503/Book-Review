@@ -17,7 +17,7 @@
         <tbody>
           {% for board in boards %}
           <tr>
-            <th scope="row">{{ board.bno }}</th>
+            <th scope="row">{{ board.row_number }}</th>
             <td><a href="detail/{{board.bno}}", target="_self">{{ board.title }}</a></td>
             <td>{{ board.writer.nickname }}</td>
             <td>{{ board.write_date }}</td>
