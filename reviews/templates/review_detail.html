@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+      <div class="form-group">
+        <label for="title">제목</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          value="{{ board.title }}"
+          readonly
+        />
+        <label for="write_date">작성일자</label>
+        <input
+          type="text"
+          class="form-control"
+          id="write_date"
+          value="{{ board.write_date }}"
+          readonly
+        />
+        <label for="nickname">작성자</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nickname"
+          value="{{ board.writer.nickname }}"
+          readonly
+        />
+        <label for="contents">내용</label>
+        <textarea class="form-control" readonly>{{ board.contents | safe }}</textarea>
+        {{ scope }}
+      </div>
+      <button class="btn btn-primary" onClick="history.back();return false;">돌아가기</button>
+    </div>
+  </div>
+{% endblock %}

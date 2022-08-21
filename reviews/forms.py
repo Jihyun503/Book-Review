@@ -27,7 +27,7 @@ class ReviewWriteForm(forms.ModelForm):
     meta_json = forms.CharField(
         label="별점",
         required=True,
-        widget=starWidget,
+        widget=starWidget
     )
 
     class Meta:
@@ -61,3 +61,26 @@ class ReviewWriteForm(forms.ModelForm):
             self.title = title
             self.contents = contents
             self.meta_json = meta_json
+
+
+# 별점만 표시하기 위한 폼
+class ScopeForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        self.val = kwargs.pop('value')
+        super().__init__(*args, **kwargs)
+        self.fields['scope'].widget.attrs.update({'value': self.val})
+        
+    scope = forms.CharField(
+        label="별점",
+        required=True,
+        widget=starWidget(
+            attrs={
+                "readonly" : "true"
+            }
+        ),
+    )
+    
+
+
+
