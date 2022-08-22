@@ -37,7 +37,7 @@
           readonly
         />
         <label for="contents">내용</label>
-        <textarea class="form-control" readonly>{{ board.contents | safe }}</textarea>
+        <div style="background: rgb(214, 192, 232);">{{ board.contents |safe }}</div>
         {{ scope }}
       </div>
       {% if writer %}
