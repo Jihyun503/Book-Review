@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-12">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">순위</th>
+            <th scope="col">사진</th>
+            <th scope="col">제목</th>
+            <th scope="col">지은이</th>
+            <th scope="col">출판일</th>
+            <th scope="col">가격</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          {% for book in bestseller %}
+          <tr>
+            <th scope="row">{{ book.id }}</th>
+            <td><img src="{{ book.bookcover }}"></td>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.pub_date }}</td>
+            <td>{{ book.price }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
