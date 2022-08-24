@@ -28,9 +28,11 @@
       </table>
     </div>
   </div>
+  {% if login_session %}
   <div class="row">
     <div class="col-12">
         <a href="{% url 'review_write' %}"><button class="btn btn-primary">글쓰기</button></a>
     </div>
   </div>
+  {% endif %}
 {% endblock %}
