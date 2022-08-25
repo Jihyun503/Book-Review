@@ -72,4 +72,44 @@ def scheduleWrite(request, **kwargs):
             '''
             context['forms'] = schedule_form
         return render(request, "schedule_write.html", context)
-    
+
+def scheduleModify(request, pk):
+    login_session = request.session.get("user", "")
+
+    context = {}
+    context['login_session'] = login_session
+
+    schedule = get_object_or_404(Schedule, id=pk)
+    context['schedules'] = schedule
+
+    if schedule.writer.id != login_session:
+        return redirect(f'/schedule')
+
+    if request.method == 'GET':
+        schedule_form = ScheduleWriteForm(instance=schedule)
+        context['forms'] = schedule_form
+        return render(request, "review_modify.html", context)
+
+    elif request.method == 'POST':
+        schedule_form = ScheduleWriteForm(request.POST)
+
+        if schedule_form.is_valid():
+            login_session = request.session.get('user', '')
+
+            schedule.title = schedule_form.title
+            schedule.contents = schedule_form.contents
+            schedule.start_date = schedule_form.start_date
+            schedule.end_date = schedule_form.end_date
+            
+            schedule.save()
+            return redirect('/schedule')
+        else:
+            '''
+            context['forms'] = join_form
+            if join_form.errors:
+                for value in join_form.errors.values():
+                    context['error'] = value
+            '''
+            context['forms'] = schedule_form
+        return render(request, "schedule_modify.html", context)
+

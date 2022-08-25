@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row mt-5" style="text-align:center;">
+    <div class="col-12">
+        <form action="" method="post">
+            {% csrf_token %}
+            <legend>일정 수정</legend>
+            {% for form in forms %}
+            <div>
+                <label for="{{form.auto_id}}">{{ form.label }}</label>
+                {{ form }}
+            </div>
+            <br>
+            {% if form.errors %}
+                <span style="color:red">{{form.errors}}</span>
+            {% endif %}
+
+            {% endfor %}
+            <br>
+            <button class="btn btn-primary" onClick="history.back();return false;">취소</button>
+            <button type="submit" class="btn btn-primary" value="join">완료</button>
+
+        </form>
+{% endblock %}
