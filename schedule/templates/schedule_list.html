@@ -1,41 +1,89 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<div class="row mt-5">
-    <div class="col-12">
-      <b>독서 진행 상황</b>
-      {% if schedules %}
-        <table class="table">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">제목</th>
-              <th scope="col">닉네임</th>
-              <th scope="col">작성일</th>
-              <th scope="col">최종수정일</th>
-            </tr>
-          </thead>
-    
+<div class="row">
+    <div class="col">
+      <p><b style="font-size: x-large;">완료됐어요!</b></p>
+      {% if past %}
+        <table class="table table-hover">
           <tbody>
-            {% for board in boards %}
+            {% for schedule in past %}
             <tr>
-              <th scope="row">{{ board.row_number }}</th>
-              <td><a href="detail/{{board.bno}}", target="_self">{{ board.title }}</a></td>
-              <td>{{ board.writer.nickname }}</td>
-              <td>{{ board.write_date }}</td>
-              <td>{{ board.update_date }}</td>
+              <td><div style="font-size: larger;">📚 {{ schedule.title }}</div>
+                  <div style="margin-left: 30;"><b style="color: pink;">{{ schedule.writer.nickname }}</b>님이 완독하였습니다</div>
+                  <div style="font-size: smaller; margin-left: 30;">⋆⁺₊⋆ {{ schedule.contents }}</div>
+                  <div style="font-size: small; margin-left: 30;">{{ schedule.start_date|date:'Y년 m월 d일' }} ~ {{ schedule.end_date|date:'Y년 m월 d일' }}</div>
+                  {% if user == schedule.writer_id %}
+                  <br>
+                  <div style="text-align: center;">
+                    <a href="{% url 'schedule_write' %}"><button class="btn" style="background-color: palevioletred; color: white;">수정</button></a>
+                  </div>
+                  {% endif %}
+              </td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
         {% endif %}
-        <div>지금 일정을 등록해주세요!</div>
-    </div>
+      </div>
+
+      <div class="col">
+        <p><b style="font-size: x-large;">진행중이에요!</b></p>
+        {% if now %}
+        <table class="table table-hover">
+          <tbody>
+            {% for schedule in now %}
+            <tr>
+              <td><div style="font-size: larger;">📚 {{ schedule.title }}</div>
+                  <div style="margin-left: 30;"><b style="color: pink;">{{ schedule.writer.nickname }}</b>님이 읽고 있습니다</div>
+                  <div style="font-size: smaller; margin-left: 30">⋆⁺₊⋆ {{ schedule.contents }}</div>
+                  <div style="font-size: small; margin-left: 30;">{{ schedule.start_date|date:'Y년 m월 d일' }} ~ {{ schedule.end_date|date:'Y년 m월 d일' }}</div>
+                  {% if user == schedule.writer_id %}
+                  <br>
+                  <div style="text-align: center;">
+                    <a href="{% url 'schedule_write' %}"><button class="btn" style="background-color: palevioletred; color: white;">수정</button></a>
+                  </div>
+                  {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+      </div>
+
+      <div class="col">
+        <p><b style="font-size: x-large;">예정됐어요!</b></p>
+        {% if future %}
+        <table class="table table-hover">
+          <tbody>
+            {% for schedule in future %}
+            <tr>
+              <td><div style="font-size: larger;">📚 {{ schedule.title }}</div>
+                  <div style="margin-left: 30;"><b style="color: pink;">{{ schedule.writer.nickname }}</b>님이 읽을 예정이에요</div>
+                  <div style="font-size: smaller; margin-left: 30">⋆⁺₊⋆ {{ schedule.contents }}</div>
+                  <div style="font-size: small; margin-left: 30;">{{ schedule.start_date|date:'Y년 m월 d일' }} ~ {{ schedule.end_date|date:'Y년 m월 d일' }}</div>
+                  {% if user == schedule.writer_id %}
+                  <br>
+                  <div style="text-align: center;">
+                    <a href="{% url 'schedule_write' %}"><button class="btn" style="background-color: palevioletred; color: white;">수정</button></a>
+                  </div>
+                  {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+      </div>
+
   </div>
+  <div>지금 일정을 등록해주세요!</div>
+  <br>
   {% if login_session %}
   <div class="row">
     <div class="col-12">
-        <a href="{% url 'review_write' %}"><button class="btn btn-primary">글쓰기</button></a>
+        <a href="{% url 'schedule_write' %}"><button class="btn" style="background-color: palevioletred; color: white;">등록하기</button></a>
     </div>
   </div>
   {% endif %}
