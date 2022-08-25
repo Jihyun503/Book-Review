@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import Schedule
-#from .forms import *
+from common.models import User
+from .forms import *
 from common.decorators import login_required
 
 # Create your views here.
@@ -17,3 +18,42 @@ def scheduleList(request, **kwargs):
     context['schedules'] = schedule
     
     return render(request, "schedule_list.html", context)
+
+
+@login_required
+def scheduleWrite(request, **kwargs):
+    context = {}
+    context['login_session'] = kwargs.get("login_session")
+
+    if request.method == 'GET':
+        schedule_form = ScheduleWriteForm()
+        context['forms'] = schedule_form
+        return render(request, "schedule_write.html", context)
+
+    elif request.method == 'POST':
+        schedule_form = ScheduleWriteForm(request.POST)
+        
+        if schedule_form.is_valid():
+            login_session = request.session.get('user', '')
+            writer = User.objects.get(id=login_session)
+            
+            schedule = Schedule(
+                writer=writer,
+                title=schedule_form.title,
+                contents=schedule_form.contents,
+                start_date=schedule_form.start_date,
+                end_date=schedule_form.end_date
+            )
+            schedule.save()
+            
+            return redirect('/schedule')
+        else:
+            '''
+            context['forms'] = join_form
+            if join_form.errors:
+                for value in join_form.errors.values():
+                    context['error'] = value
+            '''
+            context['forms'] = schedule_form
+        return render(request, "schedule_write.html", context)
+    
