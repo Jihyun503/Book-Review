@@ -68,6 +68,9 @@ def reviewDetail(request, pk):
     board = get_object_or_404(Board.objects.select_related('writer'), bno=pk)
     json_scope = board.meta_json
 
+    board.hits += 1
+    board.save()
+
     from ast import literal_eval
     scope = literal_eval(json_scope)
     
