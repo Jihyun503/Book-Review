@@ -40,7 +40,8 @@ def bestSellerList(request, **kwargs):
         for book in booklist:
             if book.select_one(".ss_ht1"):
                 book.select_one(".ss_ht1").parent.decompose()
-
+                
+            rank = book.select_one("td").get_text().replace('.', '').strip()
             title = book.select_one(".bo3").get_text()
             author = book.select("li")[1].get_text().split("|")
             author = author[0]
@@ -50,7 +51,7 @@ def bestSellerList(request, **kwargs):
             pubdate = pubdate[-1].strip()
             bookcover = book.select_one(".front_cover")['src']
             
-            bestbook.append(Bestseller(title=title, author=author, price=price, pub_date=pubdate, bookcover=bookcover, standard_week=stdweek))
+            bestbook.append(Bestseller(rank=rank, title=title, author=author, price=price, pub_date=pubdate, bookcover=bookcover, standard_week=stdweek))
             
         Bestseller.objects.bulk_create(bestbook)
 

@@ -3,6 +3,8 @@
 {% block content %}
 <div class="row mt-5">
     <div class="col-12">
+      <b>알라딘 기준으로 한주마다 순위가 업데이트 됩니다</b>
+      <br>
       <table class="table">
         <thead class="thead-dark">
           <tr>
@@ -18,7 +20,7 @@
         <tbody>
           {% for book in bestseller %}
           <tr>
-            <th scope="row">{{ book.id }}</th>
+            <th scope="row">{{ book.rank }}</th>
             <td><img src="{{ book.bookcover }}"></td>
             <td>{{ book.title }}</td>
             <td>{{ book.author }}</td>
