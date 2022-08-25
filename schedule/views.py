@@ -19,13 +19,14 @@ def scheduleList(request, **kwargs):
     now = []
     past = []
     future = []
-
+    
+    today = datetime.strptime(datetime.today().strftime('%Y-%m-%d'), '%Y-%m-%d')
     for schedule in schedules:
-        if schedule.start_date > datetime.today() and schedule.end_date > datetime.today():
+        if schedule.start_date > today and schedule.end_date > today:
             future.append(schedule)
-        elif schedule.start_date <= datetime.today() and schedule.end_date >= datetime.today():
+        elif schedule.start_date <= today and schedule.end_date >= today:
             now.append(schedule)
-        elif schedule.end_date < datetime.today():
+        elif schedule.end_date < today:
             past.append(schedule)
 
     context['now'] = now
@@ -73,6 +74,7 @@ def scheduleWrite(request, **kwargs):
             context['forms'] = schedule_form
         return render(request, "schedule_write.html", context)
 
+
 def scheduleModify(request, pk):
     login_session = request.session.get("user", "")
 
@@ -112,4 +114,16 @@ def scheduleModify(request, pk):
             '''
             context['forms'] = schedule_form
         return render(request, "schedule_modify.html", context)
+
+
+def scheduleDelete(request, pk):
+    login_session = request.session.get("user", "")
+
+    schedule = get_object_or_404(Schedule, id=pk)
+    
+    if schedule.writer.id == login_session:
+        schedule.delete()
+        return redirect('/schedule')
+    else:
+        return redirect(f'/schedule')
 
