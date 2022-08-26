@@ -13,18 +13,36 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from xml.etree.ElementInclude import include
 from django.contrib import admin
-from django.urls import path
-from reviews import views
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+import home.views
+import reviews.views
+import common.views
+import bestseller.views
+import schedule.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name = 'index'),
-    path('write/', views.writeReview, name = 'write'),
-    path('review/', views.reviewList, name = 'reviews'),
-    # 수정필요
-    path('best/', views.reviewList, name = 'best'),
-    path('join/', views.reviewList, name = 'join'),
-    path('login/', views.reviewList, name = 'login'),
-    path('freeboard/', views.reviewList, name = 'freeboard')
+    path('', home.views.index, name = 'index'),
+    path('write/', reviews.views.writeReview, name = 'review_write'),
+    path('review/', reviews.views.reviewList, name = 'review'),
+    path('review/detail/<int:pk>/', reviews.views.reviewDetail, name = 'review_detail'),
+    path('review/detail/<int:pk>/delete/', reviews.views.reviewDelete, name = 'review_delete'),
+    path('review/detail/<int:pk>/modify/', reviews.views.reviewModify, name = 'review_modify'),
+    path('best/', bestseller.views.bestSellerList, name = 'best'),
+    path('signup/', common.views.signup, name = 'signup'),
+    path('login/', common.views.login, name = 'login'),
+    path('logout/', common.views.logout, name = 'logout'),
+    path('freeboard/', reviews.views.reviewList, name = 'freeboard'),
+    path('schedule/', schedule.views.scheduleList, name = 'schedule'),
+    path('scheduleWrite/', schedule.views.scheduleWrite, name = 'schedule_write'),
+    path('schedule/<int:pk>/modify/', schedule.views.scheduleModify, name = 'schedule_modify'),
+    path('schedule/<int:pk>/delete/', schedule.views.scheduleDelete, name = 'schedule_delete'),
+    path('summernote/', include('django_summernote.urls'))
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
