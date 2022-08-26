@@ -2,11 +2,11 @@
 
 {% block content %}
 <div class="row">
-    <div class="col">
+    <div class="col-md-4">
       <p><b style="font-size: x-large;">완료됐어요!</b></p>
-      {% if past %}
         <table class="table table-hover">
           <tbody>
+            {% if past %}
             {% for schedule in past %}
             <tr>
               <td><div style="font-size: larger;">📚 {{ schedule.title }}</div>
@@ -16,22 +16,28 @@
                   {% if user == schedule.writer_id %}
                   <br>
                   <div style="text-align: center;">
-                    <a href="{% url 'schedule_write' %}"><button class="btn" style="background-color: palevioletred; color: white;">수정</button></a>
+                    <a href="{{schedule.id}}/modify", target="_self"><button class="btn" style="background-color: palevioletred; color: white;">수정</button></a>
+                    <a href="{{schedule.id}}/delete", target="_self"><button class="btn" style="background-color: palevioletred; color: white;">삭제</button></a>
                   </div>
                   {% endif %}
               </td>
             </tr>
             {% endfor %}
+            {% else %}
+            <tr>
+              <td><div style="font-size: larger; text-align: center;">일정이 없어요 😂</div>
+              </td>
+            </tr>
+            {% endif %}
           </tbody>
         </table>
-        {% endif %}
       </div>
 
-      <div class="col">
+      <div class="col-md-4">
         <p><b style="font-size: x-large;">진행중이에요!</b></p>
-        {% if now %}
         <table class="table table-hover">
           <tbody>
+            {% if now %}
             {% for schedule in now %}
             <tr>
               <td><div style="font-size: larger;">📚 {{ schedule.title }}</div>
@@ -41,22 +47,28 @@
                   {% if user == schedule.writer_id %}
                   <br>
                   <div style="text-align: center;">
-                    <a href="{% url 'schedule_write' %}"><button class="btn" style="background-color: palevioletred; color: white;">수정</button></a>
+                    <a href="{{schedule.id}}/modify", target="_self"><button class="btn" style="background-color: palevioletred; color: white;">수정</button></a>
+                    <a href="{{schedule.id}}/delete", target="_self"><button class="btn" style="background-color: palevioletred; color: white;">삭제</button></a>
                   </div>
                   {% endif %}
               </td>
             </tr>
             {% endfor %}
+            {% else %}
+            <tr>
+              <td><div style="font-size: larger; text-align: center;">일정이 없어요 😂</div>
+              </td>
+            </tr>
+            {% endif %}
           </tbody>
         </table>
-        {% endif %}
       </div>
 
-      <div class="col">
+      <div class="col-md-4">
         <p><b style="font-size: x-large;">예정됐어요!</b></p>
-        {% if future %}
         <table class="table table-hover">
           <tbody>
+            {% if future %}
             {% for schedule in future %}
             <tr>
               <td><div style="font-size: larger;">📚 {{ schedule.title }}</div>
@@ -66,19 +78,23 @@
                   {% if user == schedule.writer_id %}
                   <br>
                   <div style="text-align: center;">
-                    <a href="{% url 'schedule_write' %}"><button class="btn" style="background-color: palevioletred; color: white;">수정</button></a>
+                    <a href="{{schedule.id}}/modify", target="_self"><button class="btn" style="background-color: palevioletred; color: white;">수정</button></a>
+                    <a href="{{schedule.id}}/delete", target="_self"><button class="btn" style="background-color: palevioletred; color: white;">삭제</button></a>
                   </div>
                   {% endif %}
               </td>
             </tr>
             {% endfor %}
+            {% else %}
+            <tr>
+              <td><div style="font-size: larger; text-align: center;">일정이 없어요 😂</div>
+              </td>
+            </tr>
+            {% endif %}
           </tbody>
         </table>
-        {% endif %}
       </div>
-
   </div>
-  <div>지금 일정을 등록해주세요!</div>
   <br>
   {% if login_session %}
   <div class="row">
