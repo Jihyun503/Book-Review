@@ -1,0 +1,50 @@
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+    <div style="text-align:center;">   
+        <h1><a href="{% url 'index' %}">♥ 독서 ♥</a></h1>
+    </div>
+    <nav class="navbar navbar-expand-sm bg-light justify-content-center">
+        <ul class="navbar-nav">
+            {% if login_session %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">로그아웃</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'signup' %}">회원가입</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">로그인</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'review' %}">서평게시판</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'best' %}">베스트셀러</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'schedule' %}">독서 일정</a>
+            </li>
+        </ul>
+      </nav>
+    <div class="container" style="text-align:center;">
+    {% block content %}
+    <div>
+        <p style="font-size: xx-large;">📚 함께 책읽기 📚</p>
+        <div>
+            <img src="/static/hamtori.gif">
+        </div>
+    </div>
+    {% endblock %}
+    
+    </div>
+</html>
