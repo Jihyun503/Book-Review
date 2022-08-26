@@ -76,7 +76,8 @@ class ScopeForm(forms.Form):
         required=True,
         widget=starWidget(
             attrs={
-                "readonly" : "true"
+                "readonly" : "true",
+                "class" : "form-control"
             }
         ),
     )
