@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 
 from .models import User
 from .forms import *
+from .decorators import *
 
 # Create your views here.
 def signup(request):
@@ -38,7 +39,6 @@ def login(request):
         return render(request, "login.html", context)
 
     elif request.method == 'POST':
-        print("들어옴")
         login_form = LoginForm(request.POST)
 
         if login_form.is_valid():

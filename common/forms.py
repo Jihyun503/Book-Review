@@ -7,6 +7,7 @@ from .models import *
 from django.contrib.auth.hashers import check_password
 from argon2 import PasswordHasher
 
+# 회원가입 폼
 class SignupForm(forms.ModelForm):
     id = forms.CharField(
         label="아이디",
@@ -103,11 +104,13 @@ class SignupForm(forms.ModelForm):
             return self.add_error("pwd", "비밀번호는 8자 이상으로 입력해주세요.")
         else:
             self.id = id
-            self.pwd = PasswordHasher().hash(pwd)
+            self.pwd = PasswordHasher().hash(pwd) #암호화
             self.name = name
             self.email = email
             self.nickname = nickname
 
+
+# 로그인 폼
 class LoginForm(forms.Form):
     id = forms.CharField(
         label="아이디",
