@@ -8,6 +8,7 @@ from common.decorators import login_required
 
 # Create your views here.
 
+# 스케줄 리스트
 @login_required
 def scheduleList(request, **kwargs):
     context = {}
@@ -37,6 +38,7 @@ def scheduleList(request, **kwargs):
     return render(request, "schedule_list.html", context)
 
 
+# 스케줄 등록
 @login_required
 def scheduleWrite(request, **kwargs):
     context = {}
@@ -75,6 +77,7 @@ def scheduleWrite(request, **kwargs):
         return render(request, "schedule_write.html", context)
 
 
+# 스케줄 수정
 def scheduleModify(request, pk):
     login_session = request.session.get("user", "")
 
@@ -116,6 +119,7 @@ def scheduleModify(request, pk):
         return render(request, "schedule_modify.html", context)
 
 
+# 스케줄 삭제
 def scheduleDelete(request, pk):
     login_session = request.session.get("user", "")
 

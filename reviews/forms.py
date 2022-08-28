@@ -10,7 +10,6 @@ from django_summernote.widgets import SummernoteWidget
 
 
 # 리뷰게시판
-
 class ReviewWriteForm(forms.ModelForm):
     title = forms.CharField(
         label="제목",

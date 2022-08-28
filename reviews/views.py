@@ -6,9 +6,8 @@ from .forms import *
 from common.decorators import login_required
 
 # Create your views here.
-def index(request):
-    return render(request, "index.html")
 
+# 서평 리스트
 @login_required
 def reviewList(request, **kwargs):
     context = {}
@@ -23,6 +22,7 @@ def reviewList(request, **kwargs):
     return render(request, "review_list.html", context)
 
 
+# 서평 작성
 @login_required
 def writeReview(request, **kwargs):
     context = {}
@@ -61,6 +61,7 @@ def writeReview(request, **kwargs):
         return render(request, "review_write.html", context)
 
 
+# 서평 게시글 보기
 def reviewDetail(request, pk):
     context = {}
     login_session = request.session.get("user", "")
@@ -87,6 +88,7 @@ def reviewDetail(request, pk):
     return render(request, "review_detail.html", context)
 
 
+# 서평 수정
 def reviewModify(request, pk):
     login_session = request.session.get("user", "")
 
@@ -129,6 +131,7 @@ def reviewModify(request, pk):
         return render(request, "review_modify.html", context)
 
 
+# 서평 삭제
 def reviewDelete(request, pk):
     login_session = request.session.get("user", "")
 

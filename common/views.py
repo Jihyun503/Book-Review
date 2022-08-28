@@ -4,7 +4,7 @@ from .models import User
 from .forms import *
 from .decorators import *
 
-# Create your views here.
+# 회원가입
 def signup(request):
     signup_form = SignupForm()
     context = {'forms' : signup_form}
@@ -31,6 +31,8 @@ def signup(request):
                     context['error'] = value
         return render(request, "signup.html", context)
 
+
+# 로그인
 def login(request):
     login_form = LoginForm()
     context = {'forms' : login_form}
@@ -54,6 +56,8 @@ def login(request):
             context['forms'] = login_form
         return render(request, "login.html", context)
 
+
+# 로그아웃
 def logout(request):
     request.session.flush()
     return redirect('/')

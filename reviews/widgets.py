@@ -1,6 +1,6 @@
 from django import forms
 
-
+# 별점 위젯
 class starWidget(forms.TextInput):
     input_type = 'rating'
     template_name =  "widgets/star_rate.html"

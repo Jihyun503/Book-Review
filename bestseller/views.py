@@ -6,7 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 # Create your views here.
 
-
+# 책 순위
 @login_required
 def bestSellerList(request, **kwargs):
     
