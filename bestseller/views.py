@@ -40,7 +40,7 @@ def bestSellerList(request, **kwargs):
         for book in booklist:
             if book.select_one(".ss_ht1"):
                 book.select_one(".ss_ht1").parent.decompose()
-                
+
             rank = book.select_one("td").get_text().replace('.', '').strip()
             title = book.select_one(".bo3").get_text()
             author = book.select("li")[1].get_text().split("|")
@@ -69,8 +69,11 @@ def bestSellerList(request, **kwargs):
         return render(request, "bestseller.html", context)
     # 없을 시에는 데이터 크롤링하고 db에 저장하고 뿌려주기
     else:
-        context['bestseller'] = bestseller
         crawling(stdweek, url)
+        # 크롤링한 데이터 저장 후에 다시 select 해와서 화면에 뿌려주기
+        bestseller = Bestseller.objects.filter(standard_week=stdweek)
+        context['bestseller'] = bestseller
+
         return render(request, "bestseller.html", context)
 
     
