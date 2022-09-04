@@ -12,7 +12,8 @@ def bestSellerList(request, **kwargs):
     
     from datetime import timedelta, date
     def get_week_no():
-        today = date.today()
+        # 기준 날짜가 지난주여야함 이번주는 업데이트가 안되어있을 가능성이 있음
+        today = date.today() - timedelta(days=7)
         firstday = today.replace(day=1)
         
         if firstday.weekday() == 6:
@@ -24,7 +25,7 @@ def bestSellerList(request, **kwargs):
         
         stdweek = str(today.year) + str(today.month) + str((today - origin).days // 7 + 1)
         url = 'https://www.aladin.co.kr/shop/common/wbest.aspx?Year=%YEAR%&Month=%MONTH%&Week=%WEEK%'.replace('%YEAR%', str(today.year)).replace('%MONTH%', str(today.month)).replace('%WEEK%', str((today - origin).days // 7 + 1))
-        
+        print(url)
         return stdweek, url
     
     def crawling(stdweek, url):
@@ -36,7 +37,7 @@ def bestSellerList(request, **kwargs):
         soup = BeautifulSoup(req.text, 'lxml')
         booklist = soup.select('.ss_book_box')
         bestbook = []
-
+        
         for book in booklist:
             if book.select_one(".ss_ht1"):
                 book.select_one(".ss_ht1").parent.decompose()
