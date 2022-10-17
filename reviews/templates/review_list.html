@@ -11,6 +11,7 @@
             <th scope="col">닉네임</th>
             <th scope="col">작성일</th>
             <th scope="col">최종수정일</th>
+            <th scope="col">조회수</th>
           </tr>
         </thead>
   
@@ -22,6 +23,7 @@
             <td>{{ board.writer.nickname }}</td>
             <td>{{ board.write_date }}</td>
             <td>{{ board.update_date }}</td>
+            <td>{{ board.hits }}</td>
           </tr>
           {% endfor %}
         </tbody>
