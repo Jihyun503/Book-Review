@@ -13,7 +13,7 @@ def bestSellerList(request, **kwargs):
     from datetime import timedelta, date
     def get_week_no():
         # 기준 날짜가 지난주여야함 이번주는 업데이트가 안되어있을 가능성이 있음
-        today = date.today() - timedelta(days=7)
+        today = date.today() - timedelta(days=8)
         firstday = today.replace(day=1)
         
         if firstday.weekday() == 6:
@@ -41,7 +41,7 @@ def bestSellerList(request, **kwargs):
         for book in booklist:
             if book.select_one(".ss_ht1"):
                 book.select_one(".ss_ht1").parent.decompose()
-
+            
             rank = book.select_one("td").get_text().replace('.', '').strip()
             title = book.select_one(".bo3").get_text()
             author = book.select("li")[1].get_text().split("|")
@@ -50,7 +50,12 @@ def bestSellerList(request, **kwargs):
             price = int(price[0].replace(",", ""))
             pubdate = book.select("li")[1].get_text().split("|")
             pubdate = pubdate[-1].strip()
-            bookcover = book.select_one(".front_cover")['src']
+            
+            try:
+                bookcover = book.select_one(".front_cover")['src']
+            except Exception as e:
+                print(e)
+                bookcover = ''
             
             bestbook.append(Bestseller(rank=rank, title=title, author=author, price=price, pub_date=pubdate, bookcover=bookcover, standard_week=stdweek))
             
